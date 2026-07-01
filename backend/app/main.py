@@ -63,20 +63,28 @@ Use Bearer token from `/api/v1/auth/login` endpoint.
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
-origins_list = [o.strip() for o in settings.ALLOWED_ORIGINS.split(",")]
-# Always allow localhost for development
-if "http://localhost:3000" not in origins_list:
-    origins_list.append("http://localhost:3000")
-if "http://localhost:3001" not in origins_list:
-    origins_list.append("http://localhost:3001")
+origins_list = [o.strip() for o in settings.ALLOWED_ORIGINS.split(",") if o.strip()]
+
+# Always include these origins
+ALWAYS_ALLOWED = [
+    "http://localhost:3000",
+    "http://localhost:3001",
+    "https://krishimitra-self.vercel.app",
+    "https://krishimitra-api-gx1u.onrender.com",
+]
+for origin in ALWAYS_ALLOWED:
+    if origin not in origins_list:
+        origins_list.append(origin)
+
+logger.info(f"CORS allowed origins: {origins_list}")
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins_list,
-    allow_origin_regex=r"https://.*\.vercel\.app",  # Allow all Vercel preview URLs
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
     allow_headers=["*"],
+    expose_headers=["*"],
 )
 app.add_middleware(GZipMiddleware, minimum_size=1000)
 
