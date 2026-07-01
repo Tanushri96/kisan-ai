@@ -1,18 +1,34 @@
+# KrishiMitra Backend — Python 3.11 compatible (tested for Render free tier)
+
+# Web framework
 fastapi==0.111.0
 uvicorn[standard]==0.29.0
 python-multipart==0.0.9
+
+# Database
 motor==3.4.0
 pymongo[srv]==4.7.2
+
+# Validation (pre-built wheels for py311 on manylinux)
 pydantic==2.7.1
 pydantic-settings==2.2.1
+
+# Auth
 python-jose[cryptography]==3.3.0
-bcrypt==4.1.3
-passlib==1.7.4
+passlib[bcrypt]==1.7.4
+
+# HTTP client
 httpx==0.27.0
+
+# Rate limiting
 slowapi==0.1.9
+
+# AI (pure Python — no compilation needed)
 google-genai==1.0.0
 groq==0.9.0
-pillow==10.2.0
+
+# Image processing (use binary dist — no compilation)
+Pillow==10.2.0
+
+# Config
 python-dotenv==1.0.1
-anyio==4.3.0
-cryptography==42.0.5
